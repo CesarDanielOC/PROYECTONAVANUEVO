@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Citas Agendadas</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID Paciente</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Fecha Cita</th>
+                <th>Hora Cita</th>
+                <th>Motivo</th>
+                <th>Acciones</th>
+            </tr>
+            <center><img class="w-50" src="{% static 'img/hospital.jpeg' %}" alt="Hospital Otikuro Otimato"></center>
+        </thead>
+        <tbody>
+            
+            {% for paciente in mispacientes %}
+                <tr>
+                    <td>{{ paciente.id_paciente }}</td>
+                    <td>{{ paciente.nombre }}</td>
+                    <td>{{ paciente.edad }}</td>
+                    <td>{{ paciente.fecha_cita }}</td>
+                    <td>{{ paciente.hora_cita }}</td>
+                    <td>{{ paciente.motivo }}</td>
+                    <td>
+                        <a href="{% url 'seleccionarPaciente' paciente.id_paciente %}" class="btn btn-warning">Modificar</a>
+                        <a href="{% url 'borrarPaciente' paciente.id_paciente %}" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="container mt-4">
+    <h2 class="text-center">Agendar Cita Médica</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="txtid_paciente">ID Paciente:</label>
+            <input type="text" class="form-control" id="txtid_paciente" name="txtid_paciente" required>
+        </div>
+        <div class="form-group">
+            <label for="txtnombre">Nombre:</label>
+            <input type="text" class="form-control" id="txtnombre" name="txtnombre" required>
+        </div>
+        <div class="form-group">
+            <label for="numedad">Edad:</label>
+            <input type="number" class="form-control" id="numedad" name="numedad" required>
+        </div>
+        <div class="form-group">
+            <label for="txtfecha_cita">Fecha de la Cita:</label>
+            <input type="date" class="form-control" id="txtfecha_cita" name="txtfecha_cita" required>
+        </div>
+        <div class="form-group">
+            <label for="txthora_cita">Hora de la Cita:</label>
+            <input type="time" class="form-control" id="txthora_cita" name="txthora_cita" required>
+        </div>
+        <div class="form-group">
+            <label for="txtmotivo">Motivo:</label>
+            <input type="text" class="form-control" id="txtmotivo" name="txtmotivo" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Agendar Cita</button>
+    </form>
+    
+</div>
+{% endblock content%}
